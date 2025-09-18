@@ -1,121 +1,125 @@
 package org.example
 
-
-
 data class Node<T>(
     /**
-     * data class for values within linked list
+     * Helper data class for nodes within linked list
      */
-    var data: T,
+    var value: T,
     var next: Node<T>? = null,
     var prev: Node<T>? = null
 )
 
-class MyLinkedList<T> {
+class MyLinkedList<T> : LinkedList<T> {
+    /**
+     * Linked list implementation following interface
+     */
     var head: Node<T>? = null
     var tail: Node<T>? = null
 
-    fun pushFront(value: T) {
+    override fun pushFront(data: T) {
         when (isEmpty()) {
             true -> {
-                head = Node<T>(value)
-                tail = Node<T>(value)
+                head = Node<T>(data)
+                tail = head
             }
             false -> {
-                val newHead: Node<T> = Node<T>(value)
+                val newHead: Node<T> = Node<T>(data)
                 newHead.next = head
                 head?.prev = newHead
                 head = newHead
             }
         }
     }
-    fun pushBack(value: T) {
+    override fun pushBack(data: T) {
         when (isEmpty()) {
             true -> {
-                head = Node<T>(value)
-                tail = Node<T>(value)
+                head = Node<T>(data)
+                tail = head
             }
             false -> {
-                val newTail: Node<T> = Node<T>(value)
+                val newTail: Node<T> = Node<T>(data)
                 newTail.prev = tail
                 tail?.next = newTail
                 tail = newTail
             }
         }
     }
-    fun popFront(): T? {
-        when (isEmpty()) {
-            true -> return null
-            false -> {
-                val result: T? = head?.data
-                head = head?.next
-                head?.prev = null
-                return result
-            }
+    override fun popFront(): T? {
+        val result: T? = head?.value
+        if (head?.next == null || tail?.prev == null) {
+            head = null
+            tail = null
         }
-    }
-    fun popBack(): T? {
-        when (isEmpty()) {
-            true -> return null
-            false -> {
-                val result: T? = tail?.data
-                tail = tail?.prev
-                tail?.next = null
-                return result
-            }
+        else if (!isEmpty()){
+            head = head?.next
+            head?.prev = null
         }
+        return result
     }
-    fun peekFront(): T? {
-        return head?.data
+
+    override fun popBack(): T? {
+        val result: T? = tail?.value
+        if (tail?.prev == null || head?.next == null) {
+            head = null
+            tail = null
+        }
+        else if (!isEmpty()){
+            tail = tail?.prev
+            tail?.next = null
+        }
+        return result
     }
-    fun peekBack(): T? {
-        return tail?.data
+    override fun peekFront(): T? {
+        return head?.value
     }
-    fun isEmpty(): Boolean {
+    override fun peekBack(): T? {
+        return tail?.value
+    }
+    override fun isEmpty(): Boolean {
         return head == null && tail == null
     }
 }
 
-interface LinkedList<T> {
+class MyStack<T> : Stack<T> {
+    val stackLinkedList: MyLinkedList<T> = MyLinkedList()
 
-    /**
-     * Adds the element [data] to the front of the linked list.
-     */
-    fun pushFront(data: T)
+    override fun push(data: T) {
+        stackLinkedList.pushBack(data)
+    }
+    override fun pop(): T? {
+        return stackLinkedList.popBack()
+    }
+    override fun peek(): T? {
+        return stackLinkedList.peekBack()
+    }
+    override fun isEmpty(): Boolean {
+        return stackLinkedList.isEmpty()
+    }
 
-    /**
-     * Adds the element [data] to the back of the linked list.
-     */
-    fun pushBack(data: T)
 
-    /**
-     * Removes an element from the front of the list. If the list is empty, it is unchanged.
-     * @return the value at the front of the list or nil if none exists
-     */
-    fun popFront(): T?
 
-    /**
-     * Removes an element from the back of the list. If the list is empty, it is unchanged.
-     * @return the value at the back of the list or nil if none exists
-     */
-    fun popBack(): T?
-
-    /**
-     * @return the value at the front of the list or nil if none exists
-     */
-    fun peekFront(): T?
-
-    /**
-     * @return the value at the back of the list or nil if none exists
-     */
-    fun peekBack(): T?
-
-    /**
-     * @return true if the list is empty and false otherwise
-     */
-    fun isEmpty(): Boolean
 }
 
+class MyQueue<T>: Queue<T> {
+    val queueLinkedList: MyLinkedList<T> = MyLinkedList()
+
+    override fun enqueue(data: T) {
+        queueLinkedList.pushBack(data)
+    }
+
+    override fun dequeue(): T? {
+        return queueLinkedList.popFront()
+    }
+
+    override fun peek(): T? {
+        return queueLinkedList.peekFront()
+    }
+
+    override fun isEmpty(): Boolean {
+        return queueLinkedList.isEmpty()
+    }
+
+}
 
 
 fun main() {
@@ -128,4 +132,13 @@ fun main() {
     println(linkl.peekFront())
     println(linkl.popFront())
     println(linkl.peekFront())
+    val stk: MyStack<Int> = MyStack()
+    stk.push(1)
+    stk.push(2)
+    stk.push(3)
+    val reversed: MyStack<Int> = reverseStack(stk)
+    println(reversed.pop())
+    println(reversed.pop())
+    println("this ${reversed.pop()}")
+
 }
