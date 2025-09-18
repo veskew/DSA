@@ -5,6 +5,7 @@ data class Node<T>(
      * Helper data class for nodes within linked list
      */
     var value: T,
+    // next and prev are both Nodes also, initially null.
     var next: Node<T>? = null,
     var prev: Node<T>? = null
 )
@@ -123,22 +124,5 @@ class MyQueue<T>: Queue<T> {
 
 
 fun main() {
-    val linkl: MyLinkedList<Int> = MyLinkedList()
-    linkl.pushFront(1)
-    println(linkl.peekFront())
-    linkl.pushFront(1)
-    println(linkl.peekFront())
-    linkl.pushFront(2)
-    println(linkl.peekFront())
-    println(linkl.popFront())
-    println(linkl.peekFront())
-    val stk: MyStack<Int> = MyStack()
-    stk.push(1)
-    stk.push(2)
-    stk.push(3)
-    val reversed: MyStack<Int> = reverseStack(stk)
-    println(reversed.pop())
-    println(reversed.pop())
-    println("this ${reversed.pop()}")
 
 }
