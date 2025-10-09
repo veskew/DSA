@@ -19,3 +19,7 @@ The algorithms with nlogn runtime performed a lot better than the O(n^2) algorit
 I spent 40 minutes running insertion sort on a one million element array, and it did not return a result. I put Long for Insertion and selection sort on a million elements because I did not have the time to run them for that long.
 
 I was also confused by how sorting ten element arrays was taking so long. My theory is that those miliseconds are counting both sorting the array and also initializing all the classes/helper functions neccessary for that algorithm.
+
+# Master Theorem
+
+Included in this folder is the [pdf scan](DSA%20Master%20theorem%20practice.pdf) of my one hour of work on the master theorem
