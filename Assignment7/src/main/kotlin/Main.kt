@@ -2,6 +2,8 @@ package org.example
 import java.io.File
 import java.util.LinkedList
 import kotlin.random.Random
+import kotlin.time.DurationUnit
+import kotlin.time.measureTime
 
 class MyAssociativeArray<K, V>(val prime: Int): AssociativeArray<K, V>{
 
@@ -154,6 +156,26 @@ fun markovTextGeneration(filePath: String, hashOne: Int, hashTwo: Int, length: I
 }
 
 fun main() {
-    val result = markovTextGeneration("/home/veskew/Desktop/Olin/DSA/Assignment7/src/main/kotlin/Walks and talks of an American farmer in England.txt", 193, 193, 100)
+    val hashes = listOf(2, 4, 8, 16, 32, 53, 64, 97, 128, 193, 256, 389, 512, 769, 1024, 1543)
+    val runTimes = mutableListOf<Double>()
+
+    for (primeOne in hashes) {
+        val runTime = measureTime {
+            markovTextGeneration(
+                "/home/veskew/Desktop/Olin/DSA/Assignment7/src/main/kotlin/Walks and talks of an American farmer in England.txt",
+                primeOne,
+                193,
+                100
+            )
+        }
+        runTimes.add(runTime.toDouble(DurationUnit.SECONDS))
+    }
+
+    println("Runtimes are $runTimes")
+
+    val result = markovTextGeneration(
+        "/home/veskew/Desktop/Olin/DSA/Assignment7/src/main/kotlin/Walks and talks of an American farmer in England.txt",
+        193, 193, 100
+    )
     println(result)
 }
